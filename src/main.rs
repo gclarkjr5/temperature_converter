@@ -1,13 +1,11 @@
-mod temperature;
-
-use temperature::convert;
-use temperature::convert::Temperature;
+use f_to_c::temperature::convert;
+use f_to_c::temperature::convert::Temperature;
 
 fn main() -> Result<(), &'static str> {
     let from_temp_type = convert::read_input("What temperature do you want to convert from? Type 'c' or 'f'.");
-    let from_temp_value = convert::read_input("What value temperature do you want to convert?");
-
     let tt = convert::parse_temp_type(from_temp_type)?;
+
+    let from_temp_value = convert::read_input("What value temperature do you want to convert?");
     let tv = convert::parse_temp_value(from_temp_value)?;
 
     let from_temp = Temperature {
