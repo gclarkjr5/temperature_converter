@@ -1,26 +1,35 @@
+use clap::Parser;
+
 use f_to_c::temperature::convert;
 use f_to_c::temperature::convert::Temperature;
 
-fn main() -> Result<(), &'static str> {
+/// Simple temperature converter between celsius and fahrenheit
+#[derive(Parser)]
+#[clap(author, about, long_about = None)]
+struct Args {
+    /// Temperature type to be converted
+    #[clap(arg_enum, short, long)]
+    r#type: convert::TemperatureType,
 
-    // get the original temp type from the user (f or c)
-    let from_temp_type = convert::read_input("What temperature do you want to convert from? Type 'c' or 'f'.");
-    let tt = convert::parse_temp_type(from_temp_type)?;
+    /// Value of temp to be converted
+    #[clap(short, long)]
+    value: f32,
+}
 
-    // get the original temp value of the above temp type
-    let from_temp_value = convert::read_input("What value temperature do you want to convert?");
-    let tv = convert::parse_temp_value(from_temp_value)?;
+fn main() {
+
+    // parse the arguments
+    let args = Args::parse();
 
     // construct the original temp
     let from_temp = Temperature {
-        temp_type: tt,
-        temp_value: tv
+        temp_type: args.r#type,
+        temp_value: args.value
     };
 
     // convert
     let to_temp = Temperature::convert(&from_temp);
 
-    println!("{} in {:?} is equal to {} in {:?}", from_temp.temp_value, from_temp.temp_type, to_temp.temp_value, to_temp.temp_type);
+    println!("{} in {:?} is equal to {} in {:?}", from_temp.temp_value, from_temp.temp_type, to_temp.temp_value, to_temp.temp_type)
 
-    Ok(())
 }
