@@ -6,14 +6,14 @@ use f_to_c::temperature::convert::Temperature;
 
 
 /// Simple temperature converter between celsius and fahrenheit
-#[derive(Parser, Debug)]
+#[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
     /// Temperature type to be converted
-    #[clap(short, long)]
-    r#type: String,
+    #[clap(arg_enum, short, long)]
+    r#type: convert::TemperatureType,
 
-    /// Temperature value of the type to be converted
+    /// Value of temp to be converted
     #[clap(short, long)]
     value: f32,
 }
@@ -23,8 +23,7 @@ fn main() -> Result<(), &'static str> {
     let args = Args::parse();
 
     // get the original temp type from the user (f or c)
-    let from_temp_type = args.r#type;
-    let tt = convert::parse_temp_type(from_temp_type)?;
+    let tt = args.r#type;
 
     // get the original temp value of the above temp type
     let tv = args.value;

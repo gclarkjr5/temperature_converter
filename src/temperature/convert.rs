@@ -1,8 +1,10 @@
+use clap::ArgEnum;
+
 #[cfg(test)]
 #[path="test_convert.rs"]
 mod test_convert;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, ArgEnum)]
 pub enum TemperatureType {
     Celsius,
     Fahrenheit
@@ -35,14 +37,4 @@ fn celsius_to_fahrenheit(val: f32) -> f32 {
 
 fn fahrenheit_to_celsius(val: f32) -> f32 {
     (val - 32.0) * (5.0/9.0)
-}
-
-pub fn parse_temp_type(temp_type: String) -> Result<TemperatureType, &'static str> {
-
-    match temp_type.as_str() {
-        "c" => Ok(TemperatureType::Celsius),
-        "f" => Ok(TemperatureType::Fahrenheit),
-        _ => Err("Invalid temperature type. Only 'f' or 'c' will work.")
-    }
-
 }
